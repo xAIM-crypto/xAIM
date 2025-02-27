@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>xAIM Documentation</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <style>
+        /* Workflow Steps Styling */
+        .workflow-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin-top: 2rem;
+            position: relative;
+        }
+
+        .workflow-step {
+            position: relative;
+            padding: 2rem;
+            background: rgba(91, 19, 236, 0.05);
+            border-radius: 12px;
+            border-left: 4px solid #8000ff;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateX(-20px);
+            animation: fadeInStep 0.5s ease forwards;
+        }
+
+        .workflow-step::before {
+            content: '';
+            position: absolute;
+            left: -2px;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: linear-gradient(to bottom, #8000ff, #5b13ec);
+            transform: scaleY(0);
+            transform-origin: top;
+            transition: transform 0.3s ease;
+        }
+
+        .workflow-step:hover {
+            background: rgba(91, 19, 236, 0.1);
+            transform: translateX(5px);
+            box-shadow: 
+                0 0 30px rgba(91, 19, 236, 0.1),
+                inset 0 0 15px rgba(91, 19, 236, 0.05);
+        }
+
+        .workflow-step:hover::before {
+            transform: scaleY(1);
+        }
+
+        .step-number {
+            position: absolute;
+            left: -40px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, #8000ff, #5b13ec);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9rem;
+            box-shadow: 0 0 15px rgba(128, 0, 255, 0.3);
+        }
+
+        .workflow-step h4 {
+            color: #8000ff;
+            margin: 0 0 1rem 0;
+            font-size: 1.4em;
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(128, 0, 255, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .workflow-step p {
+            color: #fff;
+            margin: 0 0 1rem 0;
+            font-size: 1em;
+            opacity: 0.9;
+        }
+
+        .workflow-step ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .workflow-step li {
+            margin: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            color: rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+        }
+
+        .workflow-step li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: #8000ff;
+            font-weight: bold;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .workflow-step:hover li::before {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .workflow-step:hover li {
+            padding-left: 2rem;
+            color: rgba(255, 255, 255, 1);
+        }
+
+        @keyframes fadeInStep {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .workflow-step:nth-child(1) { animation-delay: 0.1s; }
+        .workflow-step:nth-child(2) { animation-delay: 0.3s; }
+        .workflow-step:nth-child(3) { animation-delay: 0.5s; }
+        .workflow-step:nth-child(4) { animation-delay: 0.7s; }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .workflow-step {
+                margin-left: 20px;
+            }
+            
+            .step-number {
+                left: -25px;
+                width: 24px;
+                height: 24px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-[#1a1624]">
+    <div class="container mx-auto px-4">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo-container">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          fill-rule="evenodd"
+                          clip-rule="evenodd"
+                          d="M39.475 21.6262C40.358 21.4363 40.6863 21.5589 40.7581 21.5934C40.7876 21.655 40.8547 21.857 40.8082 22.3336C40.7408 23.0255 40.4502 24.0046 39.8572 25.2301C38.6799 27.6631 36.5085 30.6631 33.5858 33.5858C30.6631 36.5085 27.6632 38.6799 25.2301 39.8572C24.0046 40.4502 23.0255 40.7407 22.3336 40.8082C21.8571 40.8547 21.6551 40.7875 21.5934 40.7581C21.5589 40.6863 21.4363 40.358 21.6262 39.475C21.8562 38.4054 22.4689 36.9657 23.5038 35.2817C24.7575 33.2417 26.5497 30.9744 28.7621 28.762C30.9744 26.5497 33.2417 24.7574 35.2817 23.5037C36.9657 22.4689 38.4054 21.8562 39.475 21.6262ZM4.41189 29.2403L18.7597 43.5881C19.8813 44.7097 21.4027 44.9179 22.7217 44.7893C24.0585 44.659 25.5148 44.1631 26.9723 43.4579C29.9052 42.0387 33.2618 39.5667 36.4142 36.4142C39.5667 33.2618 42.0387 29.9052 43.4579 26.9723C44.1631 25.5148 44.659 24.0585 44.7893 22.7217C44.9179 21.4027 44.7097 19.8813 43.5881 18.7597L29.2403 4.41187C27.8527 3.02428 25.8765 3.02573 24.2861 3.36776C22.6081 3.72863 20.7334 4.58419 18.8396 5.74801C16.4978 7.18716 13.9881 9.18353 11.5858 11.5858C9.18354 13.988 7.18717 16.4978 5.74802 18.8396C4.58421 20.7334 3.72865 22.6081 3.36778 24.2861C3.02574 25.8765 3.02429 27.8527 4.41189 29.2403Z"
+                          fill="currentColor"
+                        ></path>
+                    </svg>
+                </div>
+                <h2 class="logo-text">xAIM 3D</h2>
+            </div>
+            <div class="nav-container">
+                <div class="nav-links">
+                    <a href="index.html" class="nav-link">Home</a>
+                    <a href="gallery.html" class="nav-link">Gallery</a>
+                    <a href="tournament.html" class="nav-link">Tournament</a>
+                    <a href="docs.html" class="nav-link">About Coin</a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Documentation Content -->
+        <main class="documentation-content">
+            <h1 class="documentation-title">xAIM Documentation</h1>
+            
+            <!-- Quick Navigation -->
+            <div class="documentation-nav">
+                <h3 class="section-title">Quick Navigation</h3>
+                <ul>
+                    <li><a href="#about">About xAIM</a></li>
+                    <li><a href="#purpose">Purpose & Vision</a></li>
+                    <li><a href="#technology">Technology</a></li>
+                    <li><a href="#community">3D Community</a></li>
+                    <li><a href="#future">Future Development</a></li>
+                </ul>
+            </div>
+
+            <!-- About Section -->
+            <section id="about" class="documentation-section">
+                <div class="diagonal-line"></div>
+                <div class="diagonal-line"></div>
+                <h2 class="section-title">About xAIM</h2>
+                <div class="section-content">
+                    <p>xAIM (Artificial Intelligence Mesh) is an innovative platform that combines AI-powered 3D model generation with blockchain technology. Our platform enables users to create unique 3D mascots using advanced AI algorithms and compete in tournaments for token rewards.</p>
+                    
+                    <h3>Key Features</h3>
+                    <ul>
+                        <li>AI-Powered 3D Model Generation</li>
+                        <li>Interactive Tournament System</li>
+                        <li>Secure Model Ownership with Secret Keys</li>
+                        <li>Token Rewards for Tournament Winners</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Purpose Section -->
+            <section id="purpose" class="documentation-section">
+                <div class="diagonal-line"></div>
+                <div class="diagonal-line"></div>
+                <h2 class="section-title">Purpose & Vision</h2>
+                <div class="section-content">
+                    <h3>Core Mission</h3>
+                    <p>xAIM aims to revolutionize the way people interact with AI-generated 3D content by:</p>
+                    <ul>
+                        <li>Making advanced AI 3D model generation accessible to everyone</li>
+                        <li>Creating an engaging competitive environment through tournaments</li>
+                        <li>Rewarding creativity and participation with xAIM tokens</li>
+                        <li>Building a community of AI and 3D enthusiasts</li>
+                    </ul>
+
+                    <h3>How It Works</h3>
+                    <div class="workflow-steps">
+                        <div class="workflow-step">
+                            <div class="step-number">1</div>
+                            <h4>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#8000ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M2 17L12 22L22 17" stroke="#8000ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M2 12L12 17L22 12" stroke="#8000ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                Create Your Champion
+                            </h4>
+                            <p>Craft your unique 3D mascot using our AI-powered generator:</p>
+                            <ul>
+                                <li>Write your own creative prompt</li>
+                                <li>Or supercharge it with our o3 mini-high AI enhancer</li>
+                                <li>Watch your vision come to life in stunning 3D</li>
+                            </ul>
+                        </div>
+
+                        <div class="workflow-step">
+                            <div class="step-number">2</div>
+                            <h4>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#8000ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M12 16V12" stroke="#8000ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M12 8H12.01" stroke="#8000ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                Secure Your Creation
+                            </h4>
+                            <p>Happy with your masterpiece? Make it officially yours:</p>
+                            <ul>
+                                <li>Save your model to our exclusive gallery</li>
+                                <li>Receive your unique secret key</li>
+                                <li>⚠️ Keep this key safe - it's your proof of ownership!</li>
+                            </ul>
+                        </div>
+
+                        <div class="workflow-step">
+                            <div class="step-number">3</div>
+                            <h4>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M14.5 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V7.5L14.5 2Z" stroke="#8000ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M14 2V8H20" stroke="#8000ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M12 18V12" stroke="#8000ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M8 15L12 12L16 15" stroke="#8000ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                Enter The Arena
+                            </h4>
+                            <p>Time to prove your model's worth:</p>
+                            <ul>
+                                <li>Join the epic Tournament of Champions</li>
+                                <li>Battle against other creators' models</li>
+                                <li>Face off with celebrity mascots</li>
+                            </ul>
+                        </div>
+
+                        <div class="workflow-step">
+                            <div class="step-number">4</div>
+                            <h4>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M8.21 13.89L7 23L12 20L17 23L15.79 13.88" stroke="#8000ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M12 15C15.866 15 19 11.866 19 8C19 4.13401 15.866 1 12 1C8.13401 1 5 4.13401 5 8C5 11.866 8.13401 15 12 15Z" stroke="#8000ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                Claim Victory
+                            </h4>
+                            <p>Emerge victorious and claim your rewards:</p>
+                            <ul>
+                                <li>Dominate the tournament brackets</li>
+                                <li>Become the ultimate champion</li>
+                                <li>🏆 Win 5% of the total xAIM supply!</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Technology Section -->
+            <section id="technology" class="documentation-section">
+                <div class="diagonal-line"></div>
+                <div class="diagonal-line"></div>
+                <h2 class="section-title">Technology</h2>
+                <div class="section-content">
+                    <h3>Technical Implementation</h3>
+                    <p>xAIM combines several cutting-edge technologies to deliver a seamless user experience:</p>
+                    <ul>
+                        <li>Advanced AI prompt enhancement using our o3 mini-high AI system</li>
+                        <li>State-of-the-art 3D model generation powered by multiple AI models</li>
+                        <li>Real-time 3D model visualization using Google's Model Viewer</li>
+                        <li>Secure model storage and retrieval system</li>
+                    </ul>
+
+                    <h3>AI Integration</h3>
+                    <p>Our platform leverages multiple AI models to ensure high-quality 3D content generation:</p>
+                    <ul>
+                        <li>OpenAI ChatGPT integration for advanced prompt processing</li>
+                        <li>Meshy AI capabilities for enhanced model generation</li>
+                        <li>ChatGPT, Grok 3, DeepSeek integration for winner determination</li>
+                    </ul>
+
+                    <h3>Tournament System</h3>
+                    <p>The tournament system features innovative judging through our TriMind Tribunal:</p>
+                    <ul>
+                        <li>AI-powered judging system combining ChatGPT, Grok 3 and DeepSeek</li>
+                        <li>Fair and transparent evaluation process</li>
+                        <li>Automated tournament bracketing and progression</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Community Section -->
+            <section id="community" class="documentation-section">
+                <div class="diagonal-line"></div>
+                <div class="diagonal-line"></div>
+                <h2 class="section-title">3D Community</h2>
+                <div class="section-content">
+                    <h3>Community Benefits</h3>
+                    <p>xAIM represents and supports the 3D community by:</p>
+                    <ul>
+                        <li>Facilitating transactions between 3D artists and clients</li>
+                        <li>Supporting innovative 3D projects</li>
+                        <li>Creating a dedicated ecosystem for 3D content creators</li>
+                        <li>Providing financial tools specific to the 3D industry</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Future Development -->
+            <section id="future" class="documentation-section">
+                <div class="diagonal-line"></div>
+                <div class="diagonal-line"></div>
+                <h2 class="section-title">Future Development</h2>
+                <div class="section-content">
+                    <h3>Roadmap</h3>
+                    <p>Our vision for xAIM includes:</p>
+                    <ul>
+                        <li>Expanded support for various 3D project types</li>
+                        <li>Enhanced integration with 3D modeling platforms</li>
+                        <li>Development of specialized transaction features for 3D projects</li>
+                        <li>Development of an immersive 3D combat game featuring user-generated models and xAIM tokens</li>
+                    </ul>
+
+                    <h3>Community Involvement</h3>
+                    <p>We encourage community participation in shaping the future of xAIM through:</p>
+                    <ul>
+                        <li>Open development discussions</li>
+                        <li>Community voting on new features</li>
+                        <li>Collaborative project initiatives</li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-wrapper">
+        <div class="footer-tagline">
+          <span class="glowing-text"><span class="x-prefix">x</span>Where AI Meets Blockchain</span>
+        </div>
+        <div class="social-links">
+          <a href="https://x.com/xAIM3D" target="_blank" class="social-link">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16.99 3H20.25L14.1 10.07L21.33 19.5H15.77L11.24 13.64L6.06 19.5H2.8L9.39 11.93L2.5 3H8.19L12.3 8.37L16.99 3ZM16.4 17.77H17.93L7.52 4.66H5.87L16.4 17.77Z" fill="black"/>
+            </svg>
+          </a>
+          <a href="https://t.me/xAIM3D" target="_blank" class="social-link">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM16.64 8.8C16.49 10.38 15.84 14.22 15.51 16.01C15.37 16.75 15.09 16.99 14.83 17.02C14.25 17.07 13.81 16.64 13.25 16.27C12.37 15.69 11.87 15.33 11.02 14.77C10.03 14.12 10.67 13.76 11.24 13.18C11.39 13.03 13.95 10.7 14 10.49C14.0069 10.4582 14.006 10.4252 13.9973 10.3938C13.9886 10.3624 13.9724 10.3337 13.95 10.31C13.89 10.26 13.81 10.28 13.74 10.29C13.65 10.31 12.25 11.24 9.52 13.08C9.12 13.35 8.76 13.49 8.44 13.48C8.08 13.47 7.4 13.28 6.89 13.11C6.26 12.91 5.77 12.8 5.81 12.45C5.83 12.27 6.08 12.09 6.55 11.9C9.47 10.63 11.41 9.79 12.38 9.39C15.16 8.23 15.73 8.03 16.11 8.03C16.19 8.03 16.38 8.05 16.5 8.15C16.6 8.23 16.63 8.34 16.64 8.42C16.63 8.48 16.65 8.66 16.64 8.8Z" fill="black"/>
+            </svg>
+          </a>
+        </div>
+        <div class="legal-buttons">
+          <a href="policy.html" class="legal-btn">Privacy Policy</a>
+          <a href="terms.html" class="legal-btn">Terms of Service</a>
+          <a href="https://github.com/xAIM-crypto/xAIM" target="_blank" class="legal-btn">
+            <svg class="github-icon" viewBox="0 0 24 24" width="16" height="16" style="margin-right: 6px;">
+              <path fill="currentColor" d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.11.82-.26.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.73.083-.73 1.205.085 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.605-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/>
+            </svg>
+            View Source Code
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html> 

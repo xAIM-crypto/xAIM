@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <!-- Robot Head -->
+    <rect x="30" y="20" width="40" height="45" rx="5" fill="#2e2839" stroke="#5b13ec" stroke-width="2">
+        <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
+    </rect>
+    
+    <!-- Eyes -->
+    <circle cx="40" cy="35" r="5" fill="#5b13ec">
+        <animate attributeName="opacity" values="0.5;1;0.5" dur="3s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="60" cy="35" r="5" fill="#5b13ec">
+        <animate attributeName="opacity" values="0.5;1;0.5" dur="3s" repeatCount="indefinite"/>
+    </circle>
+    
+    <!-- Antenna -->
+    <line x1="50" y1="20" x2="50" y2="10" stroke="#5b13ec" stroke-width="2">
+        <animate attributeName="y2" values="10;8;10" dur="1s" repeatCount="indefinite"/>
+    </line>
+    <circle cx="50" cy="8" r="3" fill="#5b13ec">
+        <animate attributeName="r" values="2;3;2" dur="1s" repeatCount="indefinite"/>
+    </circle>
+    
+    <!-- Mouth -->
+    <rect x="40" y="45" width="20" height="3" fill="#5b13ec" rx="1">
+        <animate attributeName="width" values="20;15;20" dur="4s" repeatCount="indefinite"/>
+    </rect>
+    
+    <!-- Circuit Lines -->
+    <path d="M30 70 H70" stroke="#5b13ec" stroke-width="1" fill="none" opacity="0.5"/>
+    <path d="M35 75 H65" stroke="#5b13ec" stroke-width="1" fill="none" opacity="0.5"/>
+    <path d="M40 80 H60" stroke="#5b13ec" stroke-width="1" fill="none" opacity="0.5"/>
+    
+    <!-- Glow Effect -->
+    <defs>
+        <filter id="glow">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+            <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+    </defs>
+    
+    <!-- Apply glow to the whole robot -->
+    <g filter="url(#glow)">
+        <rect x="30" y="20" width="40" height="45" rx="5" fill="none" stroke="#5b13ec" stroke-width="1" opacity="0.3"/>
+    </g>
+</svg> 
